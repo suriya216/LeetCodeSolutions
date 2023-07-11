@@ -1,0 +1,10 @@
+class Solution {
+    public int findComplement(int num) {
+        long m=1;
+        while(m<=num){
+            num^=m;
+            m<<=1;
+        }
+        return num;
+    }
+}
