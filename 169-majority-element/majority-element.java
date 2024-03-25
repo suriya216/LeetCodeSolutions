@@ -1,16 +1,23 @@
 class Solution {
     public int majorityElement(int[] nums) {
-        Map<Integer, Integer> m=new HashMap<>();
-        for(int i=0;i<nums.length;i++){
-            m.put(nums[i], m.getOrDefault(nums[i], 0)+1);
-            //Finding occurences of each values in given array
+        //Moore's voting algorithm 
+        int count=0;
+        int temp=0;
+        for(int i:nums){
+            if(count==0){
+                //Initially take first value of array as the temp value
+                //If count is equals to zero after some iteration temp holds currently pointing indexes array value
+                temp=i;
+            }
+            if(i==temp){
+                //If the occurence of duplicate value count gets incremented
+                count++;
+            }else{
+                //Otherwise it will get decremented
+                count--;
+            }
         }
-        int n=nums.length/2;
-        for(Map.Entry<Integer, Integer> e:m.entrySet()){
-            if(e.getValue()>n)
-            //Checking the occurence of the value greater the n/2
-                return e.getKey();
-        }
-        return 0;
+        return temp;
+        //Returning temp value which holds the repeated majority element
     }
 }
