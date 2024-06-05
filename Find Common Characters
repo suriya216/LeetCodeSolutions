@@ -1,0 +1,26 @@
+class Solution {
+    public List<String> commonChars(String[] words) {
+        List<String> l=new ArrayList<>();
+        Map<Character, Integer> map=new HashMap<>();
+        String t=words[0];
+        for(int i=0;i<t.length();i++){
+            map.put(t.charAt(i), map.getOrDefault(t.charAt(i), 0)+1);
+        }
+        for(String s:words){
+            Map<Character, Integer> freq=new HashMap<>();
+            for(int i=0;i<s.length();i++){
+                char ch=s.charAt(i);
+                if(map.containsKey(ch)){
+                    freq.put(ch, Math.min(map.get(ch),freq.getOrDefault(s.charAt(i), 0)+1));
+                }
+            }
+            map=freq;
+        }
+        for(Character c:map.keySet()){
+            for(int i=0;i<map.get(c);i++){
+                l.add(String.valueOf(c));
+            }
+        }
+        return l;
+    }
+}
