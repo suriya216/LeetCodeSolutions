@@ -1,40 +1,22 @@
 class Solution {
-    public boolean validPath(int n, int[][] edges, int sur, int dest) {
-       Map<Integer, List<Integer>> adjList =new HashMap<>();
-       if(sur==dest){
-        return true;
-       }
-       for(int i=0;i<edges.length;i++){
-        int []t=edges[i];
-        if(!adjList.containsKey(t[0])){
-            adjList.put(t[0], new ArrayList<>());
-        }
-        if(!adjList.containsKey(t[1])){
-            adjList.put(t[1], new ArrayList<>());
-        }
-        adjList.get(t[0]).add(t[1]);
-        adjList.get(t[1]).add(t[0]);
-       }
-       Queue<Integer> q=new LinkedList<>();
-       boolean f=false;
-       q.add(sur);
-       while(!q.isEmpty()){
-        int v=q.poll();
-        boolean temp=false;
-        List<Integer> l=adjList.containsKey(v)?adjList.get(v):new ArrayList<>();
-        for(int i=0;i<l.size();i++){
-            if(l.get(i)==dest){
-                temp=true;
-                break;
+    public void dfs(int node,int v[],ArrayList<ArrayList<Integer>>l)
+    {
+        v[node]=1;
+        for(Integer it:l.get(node))
+            if(v[it]==0)dfs(it,v,l);
+    }
+    public boolean validPath(int n, int[][] edges, int source, int destination) {
+        ArrayList<ArrayList<Integer>>l=new ArrayList<>();
+        for(int i=0;i<n;i++)
+            l.add(new ArrayList<>());
+            for(int i=0;i<edges.length;i++)
+            {
+                l.get(edges[i][0]).add(edges[i][1]);
+                l.get(edges[i][1]).add(edges[i][0]);
             }
-            q.add(l.get(i));
-        }
-        adjList.remove(v);
-        if(temp){
-            f=true;
-            break;
-        }
-       }
-       return f;
+        int v[]=new int[n];
+        dfs(source,v,l);
+        if(v[source]==1 && v[destination]==1)return true;
+        else return false;
     }
 }
