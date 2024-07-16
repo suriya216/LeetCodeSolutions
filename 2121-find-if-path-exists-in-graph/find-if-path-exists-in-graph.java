@@ -1,22 +1,27 @@
 class Solution {
-    public void dfs(int node,int v[],ArrayList<ArrayList<Integer>>l)
-    {
-        v[node]=1;
-        for(Integer it:l.get(node))
-            if(v[it]==0)dfs(it,v,l);
+    public static boolean dfs(int node, int destination, Map<Integer,List<Integer>> graph, Set<Integer> visited) {
+        if (node==destination) {
+            return true;
+        }
+        visited.add(node);
+        for (int neighbor : graph.getOrDefault(node, new ArrayList<>())) {
+            if (!visited.contains(neighbor)) {
+                if (dfs(neighbor, destination, graph, visited)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
     public boolean validPath(int n, int[][] edges, int source, int destination) {
-        ArrayList<ArrayList<Integer>>l=new ArrayList<>();
-        for(int i=0;i<n;i++)
-            l.add(new ArrayList<>());
-            for(int i=0;i<edges.length;i++)
-            {
-                l.get(edges[i][0]).add(edges[i][1]);
-                l.get(edges[i][1]).add(edges[i][0]);
-            }
-        int v[]=new int[n];
-        dfs(source,v,l);
-        if(v[source]==1 && v[destination]==1)return true;
-        else return false;
+        Map<Integer, List<Integer>> graph = new HashMap<>();
+        for (int[] edge : edges) {
+            int u = edge[0];
+            int v = edge[1];
+            graph.computeIfAbsent(u, k -> new ArrayList<>()).add(v);
+            graph.computeIfAbsent(v, k -> new ArrayList<>()).add(u);
+        }
+        Set<Integer> visited = new HashSet<>();
+        return dfs(source, destination, graph, visited);
     }
 }
