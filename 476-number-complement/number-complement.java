@@ -1,10 +1,17 @@
 class Solution {
     public int findComplement(int num) {
-        if(num==0){
-            return 1;
+        String []bit=Integer.toBinaryString(num).split("");
+        for(int i=0;i<bit.length;i++){
+            if(bit[i].equals("0")){
+                bit[i]="1";
+            }else if(bit[i].equals("1")){
+                bit[i]="0";
+            }
         }
-        int bit=Integer.toBinaryString(num).length();
-        int change=(1<<bit)-1;
-        return num^change;
+        String res="";
+        for(int i=0;i<bit.length;i++){
+            res+=bit[i];
+        }
+        return Integer.parseInt(res, 2);
     }
 }
